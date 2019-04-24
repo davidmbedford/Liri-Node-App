@@ -1,0 +1,28 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "for the use of liri app",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidmbedford/Liri-Node-App.git"
+  },
+  "keywords": [
+    "node",
+    "axios"
+  ],
+  "author": "david m bedford",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidmbedford/Liri-Node-App/issues"
+  },
+  "homepage": "https://github.com/davidmbedford/Liri-Node-App#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "node-spotify-api": "^1.1.1",
+    "save": "^2.3.3"
+  }
+}
