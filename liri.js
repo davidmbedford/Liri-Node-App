@@ -1,14 +1,9 @@
-const dotenv = require("dotenv").config();
-const axios = require("axios");
-const spotify = require('node-spotify-api');
-let keys = require("./keys.js");
+require('dotenv').config();
+const axios = require('axios');
+const Spotify = require('node-spotify-api');
 
-//var spotify = new Spotify(keys.spotify);
-// Client ID 5dd7210c7e764cf483dc8add6dab1d61
-// Client Secret 12c754344f154dfca62a171195cff7ce
-
+let keys = require('./keys.js');
 let nodeArgs = process.argv;
-
 let inputName = "";
 
 for (let i = 2; i < nodeArgs.length; i++) {
@@ -27,6 +22,17 @@ for (let i = 2; i < nodeArgs.length; i++) {
 // Venue location                                                \
 // Date of the Event (use moment to format this as "MM/DD/YYYY") /
 /////////////////////////////////////////////////////////////////
+let bitQueryUrl = 'https://rest.bandsintown.com/artists/' + inputName + '/events?app_id=codingbootcamp';
+
+axios.get(bitQueryUrl).then(
+  function(response) {
+    console.log(bitQueryUrl);
+    // console.log("\n===================\n")
+    // console.log('Venue Name: ' + response.data.Title);
+    // console.log('Venue Location': + response.data.Year);
+    // console.log('Event Date: ' + response.data.Ratings[0].Value);
+  }
+);
 
 // spotify-this-song
 // node liri.js spotify-this-song '<song name here>'
@@ -37,8 +43,21 @@ for (let i = 2; i < nodeArgs.length; i++) {
 // The album that the song is from            /
 //////////////////////////////////////////////
 
+// let spoQueryUrl = "'https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx'";
+let spotify = new Spotify(keys.spotify);
 
+  spotify.search({ type: 'track', query: inputName }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    console.log('\n===================\n')
+    console.log(data);
+    // console.log('Artist(s): ' + response.data.Title);
+    // console.log('Song Name: ' + response.data.Year);
+    // console.log('Preview link: ' + response.data.Ratings[0].Value);
+    // console.log('Album: ' + response.data.Ratings[1].Value);
 
+  });
 
 // movie-this
 // node liri.js movie-this '<movie name here>'
@@ -53,20 +72,20 @@ for (let i = 2; i < nodeArgs.length; i++) {
 // * Actors in the movie.                 /
 //////////////////////////////////////////
 
-let movQueryUrl = "http://www.omdbapi.com/?t=" + inputName + "&y=&plot=short&apikey=trilogy";
+let movQueryUrl = 'http://www.omdbapi.com/?t=' + inputName + '&y=&plot=short&apikey=trilogy';
 
 axios.get(movQueryUrl).then(
   function(response) {
     console.log(movQueryUrl);
-    console.log("\n===================\n")
-    console.log("Movie Title: " + response.data.Title);
-    console.log("Release Year: " + response.data.Year);
-    console.log("IMDB Rating: " + response.data.Ratings[0].Value);
-    console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value );
-    console.log("This movie was produced in (country): " + response.data.Country );
-    console.log("Language: " + response.data.Language);
-    console.log("Plot: " + response.data.Plot);
-    console.log("Actors: " + response.data.Actors);
+    console.log('\n===================\n')
+    console.log('Movie Title: ' + response.data.Title);
+    console.log('Release Year: ' + response.data.Year);
+    console.log('IMDB Rating: ' + response.data.Ratings[0].Value);
+    console.log('Rotten Tomatoes Rating: ' + response.data.Ratings[1].Value );
+    console.log('This movie was produced in (country): ' + response.data.Country );
+    console.log('Language: ' + response.data.Language);
+    console.log('Plot: ' + response.data.Plot);
+    console.log('Actors: ' + response.data.Actors);
   }
 );
 
