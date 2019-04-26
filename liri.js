@@ -1,8 +1,8 @@
 require('dotenv').config();
 const axios = require('axios');
 const Spotify = require('node-spotify-api');
-
 let keys = require('./keys.js');
+
 let nodeArgs = process.argv;
 let inputName = "";
 
@@ -27,10 +27,16 @@ let bitQueryUrl = 'https://rest.bandsintown.com/artists/' + inputName + '/events
 axios.get(bitQueryUrl).then(
   function(response) {
     console.log(bitQueryUrl);
-    // console.log("\n===================\n")
-    // console.log('Venue Name: ' + response.data.Title);
-    // console.log('Venue Location': + response.data.Year);
-    // console.log('Event Date: ' + response.data.Ratings[0].Value);
+    console.log("\n===================\n");
+    let arr = response.data;
+    let concerts = response.data[0];
+    console.log(concerts)
+    for (var i in concerts) {
+      console.log('Venue Name: ' + concerts[i].venue.name);
+    }
+
+    // console.log('Venue Location: ' + response.data[0].venue.city + ' ' + response.data[0].venue.region + ' ' + response.data[0].venue.country);
+    // console.log('Event Date: ' + response.data[0].datetime);
   }
 );
 
@@ -43,21 +49,24 @@ axios.get(bitQueryUrl).then(
 // The album that the song is from            /
 //////////////////////////////////////////////
 
-// let spoQueryUrl = "'https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx'";
-let spotify = new Spotify(keys.spotify);
+// let spotify = new Spotify(keys.spotify);
 
-  spotify.search({ type: 'track', query: inputName }, function(err, data) {
-    if (err) {
-      return console.log('Error occurred: ' + err);
-    }
-    console.log('\n===================\n')
-    console.log(data);
-    // console.log('Artist(s): ' + response.data.Title);
-    // console.log('Song Name: ' + response.data.Year);
-    // console.log('Preview link: ' + response.data.Ratings[0].Value);
-    // console.log('Album: ' + response.data.Ratings[1].Value);
+//   spotify.search({ type: 'track', query: inputName }, function(err, data) {
+//     if (err) {
+//       return console.log('Error occurred: ' + err);
+//     }
+//     console.log('\n===================\n')
+//     console.log(data);
+//     let cycle = data.tracks.items;
+//     for (i =0; i < cycle.length; i++) {
+//       console.log(JSON.stringify(cycle[i], null, 2));
+//     }
+//     // console.log('Artist(s): ' + response.data.Title);
+//     // console.log('Song Name: ' + response.data.Year);
+//     // console.log('Preview link: ' + response.data.Ratings[0].Value);
+//     // console.log('Album: ' + response.data.Ratings[1].Value);
 
-  });
+//   });
 
 // movie-this
 // node liri.js movie-this '<movie name here>'
