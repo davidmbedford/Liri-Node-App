@@ -1,21 +1,13 @@
-//var dotenv = require("dotenv").config()
+require('dotenv').config();
+const axios = require('axios');
+const Spotify = require('node-spotify-api');
+const moment = require('moment');
+let keys = require('./keys.js');
 
-//var keys = require("./keys.js");
+let nodeArgs = process.argv;
+let inputName = "";
 
-//var spotify = new Spotify(keys.spotify);
-// Client ID 5dd7210c7e764cf483dc8add6dab1d61
-// Client Secret 12c754344f154dfca62a171195cff7ce
-
-//var bandsitUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
-///////////////////////////////////////////////////////////////////////////////////////////////////
-var axios = require("axios");
-
-var nodeArgs = process.argv;
-
-var inputName = "";
-
-for (var i = 2; i < nodeArgs.length; i++) {
-
+for (let i = 2; i < nodeArgs.length; i++) {
   if (i > 2 && i < nodeArgs.length) {
     inputName = inputName + "+" + nodeArgs[i];
   }
@@ -31,6 +23,31 @@ for (var i = 2; i < nodeArgs.length; i++) {
 // Venue location                                                \
 // Date of the Event (use moment to format this as "MM/DD/YYYY") /
 /////////////////////////////////////////////////////////////////
+let bitQueryUrl = 'https://rest.bandsintown.com/artists/' + inputName + '/events?app_id=codingbootcamp';
+
+axios.get(bitQueryUrl).then(
+  function(response) {
+    console.log('\n===================\n');
+    console.log('BANDS IN TOWN');
+    console.log(bitQueryUrl);
+
+    let concerts = response.data;
+    // console.log(concerts)
+    for (var i in concerts) {
+      console.log('Line-Up: ' + concerts[i].lineup);
+      console.log('Venue Name: ' + concerts[i].venue.name);
+      console.log('Venue Location: ' + concerts[i].venue.city + ' ' + concerts[i].venue.region + ' ' + concerts[i].venue.country);
+      let eventTimeRaw = concerts[i].datetime;
+      let eventTime = moment(eventTimeRaw, "YYYY-MM-DDThh:mm").format("LLLL");
+      console.log('Event Date: ' + eventTime);
+      console.log(' . . . ');
+    }
+
+    console.log('\n===================\n')
+  }
+);
+
+
 
 // spotify-this-song
 // node liri.js spotify-this-song '<song name here>'
@@ -40,6 +57,21 @@ for (var i = 2; i < nodeArgs.length; i++) {
 // A preview link of the song from Spotify     /
 // The album that the song is from            /
 //////////////////////////////////////////////
+
+let spotify = new Spotify(keys.spotify);
+
+  spotify.search({ type: 'track', query: inputName }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    console.log('\n===================\n')
+    let spotifyInfo = data.tracks.items;
+    // console.log(spotifyInfo[0])
+    console.log("Artist: " + spotifyInfo[0].artists[0].name);
+    console.log("Song Name: " + spotifyInfo[0].name);
+    console.log("Album Name: " + spotifyInfo[0].album.name)
+    console.log("Link to Spotify: " + spotifyInfo[0].external_urls.spotify);
+  });
 
 // movie-this
 // node liri.js movie-this '<movie name here>'
@@ -54,13 +86,22 @@ for (var i = 2; i < nodeArgs.length; i++) {
 // * Actors in the movie.                 /
 //////////////////////////////////////////
 
-var movQueryUrl = "http://www.omdbapi.com/?t=" + inputName + "&y=&plot=short&apikey=trilogy";
-
-console.log(movQueryUrl);
+let movQueryUrl = 'http://www.omdbapi.com/?t=' + inputName + '&y=&plot=short&apikey=trilogy';
 
 axios.get(movQueryUrl).then(
   function(response) {
-    console.log("Release Year: " + response.data.Year);
+    console.log('\n===================\n');
+    console.log('OMDB Results')
+    console.log(movQueryUrl);
+    console.log('Movie Title: ' + response.data.Title);
+    console.log('Release Year: ' + response.data.Year);
+    console.log('IMDB Rating: ' + response.data.Ratings[0].Value);
+    console.log('Rotten Tomatoes Rating: ' + response.data.Ratings[1].Value );
+    console.log('This movie was produced in (country): ' + response.data.Country );
+    console.log('Language: ' + response.data.Language);
+    console.log('Plot: ' + response.data.Plot);
+    console.log('Actors: ' + response.data.Actors);
+    console.log('\n===================\n');
   }
 );
 
