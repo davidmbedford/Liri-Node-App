@@ -1,6 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const Spotify = require('node-spotify-api');
+const moment = require('moment');
 let keys = require('./keys.js');
 
 let nodeArgs = process.argv;
@@ -26,19 +27,27 @@ let bitQueryUrl = 'https://rest.bandsintown.com/artists/' + inputName + '/events
 
 axios.get(bitQueryUrl).then(
   function(response) {
+    console.log('\n===================\n');
+    console.log('BANDS IN TOWN');
     console.log(bitQueryUrl);
-    console.log("\n===================\n");
-    let arr = response.data;
-    let concerts = response.data[0];
-    console.log(concerts)
+
+    let concerts = response.data;
+    // console.log(concerts)
     for (var i in concerts) {
+      console.log('Line-Up: ' + concerts[i].lineup);
       console.log('Venue Name: ' + concerts[i].venue.name);
+      console.log('Venue Location: ' + concerts[i].venue.city + ' ' + concerts[i].venue.region + ' ' + concerts[i].venue.country);
+      let eventTimeRaw = concerts[i].datetime;
+      let eventTime = moment(eventTimeRaw, "YYYY-MM-DDThh:mm").format("LLLL");
+      console.log('Event Date: ' + eventTime);
+      console.log(' . . . ');
     }
 
-    // console.log('Venue Location: ' + response.data[0].venue.city + ' ' + response.data[0].venue.region + ' ' + response.data[0].venue.country);
-    // console.log('Event Date: ' + response.data[0].datetime);
+    console.log('\n===================\n')
   }
 );
+
+
 
 // spotify-this-song
 // node liri.js spotify-this-song '<song name here>'
@@ -49,24 +58,20 @@ axios.get(bitQueryUrl).then(
 // The album that the song is from            /
 //////////////////////////////////////////////
 
-// let spotify = new Spotify(keys.spotify);
+let spotify = new Spotify(keys.spotify);
 
-//   spotify.search({ type: 'track', query: inputName }, function(err, data) {
-//     if (err) {
-//       return console.log('Error occurred: ' + err);
-//     }
-//     console.log('\n===================\n')
-//     console.log(data);
-//     let cycle = data.tracks.items;
-//     for (i =0; i < cycle.length; i++) {
-//       console.log(JSON.stringify(cycle[i], null, 2));
-//     }
-//     // console.log('Artist(s): ' + response.data.Title);
-//     // console.log('Song Name: ' + response.data.Year);
-//     // console.log('Preview link: ' + response.data.Ratings[0].Value);
-//     // console.log('Album: ' + response.data.Ratings[1].Value);
-
-//   });
+  spotify.search({ type: 'track', query: inputName }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    console.log('\n===================\n')
+    let spotifyInfo = data.tracks.items;
+    // console.log(spotifyInfo[0])
+    console.log("Artist: " + spotifyInfo[0].artists[0].name);
+    console.log("Song Name: " + spotifyInfo[0].name);
+    console.log("Album Name: " + spotifyInfo[0].album.name)
+    console.log("Link to Spotify: " + spotifyInfo[0].external_urls.spotify);
+  });
 
 // movie-this
 // node liri.js movie-this '<movie name here>'
@@ -85,8 +90,9 @@ let movQueryUrl = 'http://www.omdbapi.com/?t=' + inputName + '&y=&plot=short&api
 
 axios.get(movQueryUrl).then(
   function(response) {
+    console.log('\n===================\n');
+    console.log('OMDB Results')
     console.log(movQueryUrl);
-    console.log('\n===================\n')
     console.log('Movie Title: ' + response.data.Title);
     console.log('Release Year: ' + response.data.Year);
     console.log('IMDB Rating: ' + response.data.Ratings[0].Value);
@@ -95,6 +101,7 @@ axios.get(movQueryUrl).then(
     console.log('Language: ' + response.data.Language);
     console.log('Plot: ' + response.data.Plot);
     console.log('Actors: ' + response.data.Actors);
+    console.log('\n===================\n');
   }
 );
 
