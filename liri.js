@@ -2,27 +2,60 @@ require('dotenv').config();
 const axios = require('axios');
 const Spotify = require('node-spotify-api');
 const moment = require('moment');
+const inquirer = require('inquirer');
 let keys = require('./keys.js');
 
-let nodeArgs = process.argv;
-let inputName = "";
+// let nodeArgs = process.argv;
+let inputName = '';
 
-for (let i = 2; i < nodeArgs.length; i++) {
-  if (i > 2 && i < nodeArgs.length) {
-    inputName = inputName + "+" + nodeArgs[i];
-  }
-  else {
-    inputName += nodeArgs[i];
-  }
-}
+// for (let i = 2; i < nodeArgs.length; i++) {
+//   if (i > 2 && i < nodeArgs.length) {
+//     inputName = inputName + '+' + nodeArgs[i];
+//   }
+//   else {
+//     inputName += nodeArgs[i];
+//   }
+// }
 
+inquirer
+  .prompt([
+
+    {
+      type: 'list',
+      message: 'Options: ',
+      choices: ['Concert-this', 'Song-this', 'Movie-this'],
+      name: 'command'
+    },
+
+    {
+      type: 'input',
+      message: 'What would you like to search?',
+      name: 'userInput'
+    }
+
+  ])
+  .then(function(response) {
+    let command = response.command;
+    inputName = response.userInput;
+
+    if (command === 'Concert-this') {
+      concertThis();
+    } else if (command === 'Song-this') {
+      songThis();
+    } else if (command === 'Movie-this') {
+      movieThis();
+    }
+
+  });
 // concert-this
 // node liri.js concert-this <artist/band name here>
 /////////////////////////////////////////////////////////////////
 // Name of the venue                                            \
 // Venue location                                                \
-// Date of the Event (use moment to format this as "MM/DD/YYYY") /
+// Date of the Event (use moment to format this as 'MM/DD/YYYY') /
 /////////////////////////////////////////////////////////////////
+
+const concertThis = function () {
 let bitQueryUrl = 'https://rest.bandsintown.com/artists/' + inputName + '/events?app_id=codingbootcamp';
 
 axios.get(bitQueryUrl).then(
@@ -38,14 +71,15 @@ axios.get(bitQueryUrl).then(
       console.log('Venue Name: ' + concerts[i].venue.name);
       console.log('Venue Location: ' + concerts[i].venue.city + ' ' + concerts[i].venue.region + ' ' + concerts[i].venue.country);
       let eventTimeRaw = concerts[i].datetime;
-      let eventTime = moment(eventTimeRaw, "YYYY-MM-DDThh:mm").format("LLLL");
+      let eventTime = moment(eventTimeRaw, 'YYYY-MM-DDThh:mm').format('LLLL');
       console.log('Event Date: ' + eventTime);
       console.log(' . . . ');
     }
 
     console.log('\n===================\n')
-  }
-);
+    }
+  );
+};
 
 // spotify-this-song
 // node liri.js spotify-this-song '<song name here>'
@@ -56,6 +90,7 @@ axios.get(bitQueryUrl).then(
 // The album that the song is from            /
 //////////////////////////////////////////////
 
+const songThis = function () {
 let spotify = new Spotify(keys.spotify);
 
   spotify.search({ type: 'track', query: inputName }, function(err, data) {
@@ -65,12 +100,12 @@ let spotify = new Spotify(keys.spotify);
     console.log('\n===================\n')
     let spotifyInfo = data.tracks.items;
     // console.log(spotifyInfo[0])
-    console.log("Artist: " + spotifyInfo[0].artists[0].name);
-    console.log("Song Name: " + spotifyInfo[0].name);
-    console.log("Album Name: " + spotifyInfo[0].album.name)
-    console.log("Link to Spotify: " + spotifyInfo[0].external_urls.spotify);
+    console.log('Artist: ' + spotifyInfo[0].artists[0].name);
+    console.log('Song Name: ' + spotifyInfo[0].name);
+    console.log('Album Name: ' + spotifyInfo[0].album.name)
+    console.log('Link to Spotify: ' + spotifyInfo[0].external_urls.spotify);
   });
-
+};
 // movie-this
 // node liri.js movie-this '<movie name here>'
 //////////////////////////////////////////
@@ -83,7 +118,7 @@ let spotify = new Spotify(keys.spotify);
 // * Plot of the movie.                    \
 // * Actors in the movie.                 /
 //////////////////////////////////////////
-
+const movieThis = function () {
 let movQueryUrl = 'http://www.omdbapi.com/?t=' + inputName + '&y=&plot=short&apikey=trilogy';
 
 axios.get(movQueryUrl).then(
@@ -100,9 +135,8 @@ axios.get(movQueryUrl).then(
     console.log('Plot: ' + response.data.Plot);
     console.log('Actors: ' + response.data.Actors);
     console.log('\n===================\n');
-  }
-);
-
+  });
+}
 // do-what-it-says
 // node liri.js do-what-it-says
 /////////////////////////////////////////////////////////////////
@@ -110,36 +144,9 @@ axios.get(movQueryUrl).then(
 // the text inside of random.txt and then use it                /
 // to call one of LIRI's commands.                              \
 //                                                              /
-// It should run spotify-this-song for "I Want it That Way,"    \
+// It should run spotify-this-song for 'I Want it That Way,'    \
 // as follows the text in random.txt.                           /
 //                                                             /
 // Edit the text in random.txt to test out                    /
 // the feature for movie-this and concert-this.              /
 ////////////////////////////////////////////////////////////
-
-
-inquirer
-  .prompt([
-
-    {
-      type: "list",
-      message: "Options: ",
-      choices: ["Concert-this", "Song-this", "Movie-this"],
-      name: "command"
-    },
-
-  ])
-  .then(function(response) {
-    let command = response.command
-
-    if (command =) {
-
-    } else if (command =) {
-
-    } else if (command =) {
-
-    } else if (command =){
-
-    }
-
-  });
