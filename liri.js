@@ -137,9 +137,21 @@ const movieThis = function () {
 const doThis = function (response) {
   fs.readFile("./random.txt", "utf8", function (err, data) {
     if (err) throw err;
-    console.log(data)
-    let output = data.split(',');
-    console.log(output);
-  });
 
+    let output = data.split(',');
+    let a = output[0];
+    let b = output[1];
+
+    if (a === 'spotify-this-song') {
+    inputName = b;
+    songThis();
+    } else if (a === 'movie-this') {
+    inputName = b;
+    movieThis();
+    } else if (a === 'concert-this') {
+    inputName = b;
+    concertThis();
+    }
+
+  });
 }
