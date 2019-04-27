@@ -47,8 +47,6 @@ axios.get(bitQueryUrl).then(
   }
 );
 
-
-
 // spotify-this-song
 // node liri.js spotify-this-song '<song name here>'
 ////////////////////////////////////////////////
@@ -118,3 +116,30 @@ axios.get(movQueryUrl).then(
 // Edit the text in random.txt to test out                    /
 // the feature for movie-this and concert-this.              /
 ////////////////////////////////////////////////////////////
+
+
+inquirer
+  .prompt([
+
+    {
+      type: "list",
+      message: "Options: ",
+      choices: ["Concert-this", "Song-this", "Movie-this"],
+      name: "command"
+    },
+
+  ])
+  .then(function(response) {
+    let command = response.command
+
+    if (command =) {
+
+    } else if (command =) {
+
+    } else if (command =) {
+
+    } else if (command =){
+
+    }
+
+  });
