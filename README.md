@@ -21,7 +21,7 @@ This app has four different search options:
 2. Select one of the options listed above and hit ENTER.
 3. Enter whatever you want! if you choose: Do-it! - just hit ENTER.
 
-##### How it works
+### How it works
 This app uses Node.js technology to run in the command line. For my project - and all others - I use Git Bash as my CLI.
 
 The project uses javascript and several node packages, including:
