@@ -50,8 +50,7 @@ const concertThis = function () {
   axios.get(bitQueryUrl).then(
     function(response) {
       console.log('\n===================\n');
-      console.log('BANDS IN TOWN');
-      console.log(bitQueryUrl);
+      console.log('BandsInTown Results');
 
       let concerts = response.data;
       for (var i in concerts) {
@@ -85,7 +84,7 @@ const songThis = function () {
     }
     console.log('\n===================\n')
     let spotifyInfo = data.tracks.items;
-
+    console.log('Spotify Results');
     console.log('Artist: ' + spotifyInfo[0].artists[0].name);
     console.log('Song Name: ' + spotifyInfo[0].name);
     console.log('Album Name: ' + spotifyInfo[0].album.name)
@@ -106,8 +105,7 @@ const movieThis = function () {
   axios.get(movQueryUrl).then(
     function(response) {
       console.log('\n===================\n');
-      console.log('OMDB Results')
-      console.log(movQueryUrl);
+      console.log('OMDB Results');
       console.log('Movie Title: ' + response.data.Title);
       console.log('Release Year: ' + response.data.Year);
       console.log('IMDB Rating: ' + response.data.Ratings[0].Value);
