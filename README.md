@@ -27,7 +27,7 @@ This app has four different search options:
 * If you do not enter parameters for option 2: it will default-search __The Sign by Ace of Base__. *
 * If you do not enter parameters for option 3: it will default-search __Mr Nobody__. *
 
-  ![JPG of Defaults](./images/defaults.jpg)
+  ![JPG of Defaults](./images/defaults.png)
 
 ##### How it works
 This app uses Node.js technology to run in the command line. For my project - and all others - I use Git Bash as my CLI.
