@@ -1,8 +1,8 @@
-# Liri-Node-App
-### This is a node-based app that uses a command-line interface to find concerts, movies, and music.
-### Liri stands for: Language Interpretation and Recognition Interface.
+# Liri: Node App
+ LIRI is a Node.js based app that users can run in a *command line interface* to search for concerts, movies, and music.
+ Liri stands for: Language Interpretation and Recognition Interface.
 
-##### What it does
+### What it does
 This app has four different search options:
 1. Concert-this
   * If you select this option, you can search for concerts across the US
