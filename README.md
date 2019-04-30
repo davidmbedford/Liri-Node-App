@@ -22,7 +22,7 @@ This app has four different search options:
 4. Do-it!
   * If you select this option, ands hit ENTER, you will get a random action from within the program.
 
-  ![GIF of Do-it](./images/do-it.gif)
+  ![GIF of Do-it](./images/do-this.gif)
 
 * If you do not enter parameters for option 2: it will default-search __The Sign by Ace of Base__. *
 * If you do not enter parameters for option 3: it will default-search __Mr Nobody__. *
